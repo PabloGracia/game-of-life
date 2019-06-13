@@ -56,20 +56,65 @@ export const numberAliveNeighbours = (
   return counter;
 };
 
+/**
+ * Function getMatrix
+ * returns the 3x3 boolean matrix sorrounding the target cell
+ * @param world_matrix nxm boolean matrix of the world
+ * @param x_pos x position of the target cell
+ * @param y_pos y position of the target cell
+ */
 export const getMatrix = (
   world_matrix: boolean[][],
   x_pos: number,
   y_pos: number
-): boolean[][] => {
+): boolean[][] | undefined => {
   let objective_matrix: boolean[][] = [];
   let index: number = 0;
   for (let x = -1; x < 2; x++) {
     objective_matrix.push([]);
     for (let y = -1; y < 2; y++) {
+      if (typeof world_matrix[x_pos + x][y_pos + y] !== "boolean") {
+        return undefined;
+      }
       objective_matrix[index].push(world_matrix[x_pos + x][y_pos + y]);
     }
     index++;
   }
 
   return objective_matrix;
+};
+
+export const analyzeBorders = (
+  world_matrix: boolean[][]
+): boolean | undefined => {
+  // Check that the length of the rows is not zero
+  if (world_matrix[0].length === 0) {
+    return undefined;
+  }
+  //Check that the length of the columns is not zero
+  if (world_matrix.length === 0) {
+    return undefined;
+  }
+  // Check that all the arrays in the matrix have the same length
+  for (let i = 1; i < world_matrix.length; i++) {
+    if (world_matrix[i].length !== world_matrix[0].length) {
+      return undefined;
+    }
+  }
+
+  // Check first and last rows
+  for (let i = 0; i < world_matrix[0].length; i++) {
+    if (world_matrix[0][i] || world_matrix[world_matrix.length - 1][i]) {
+      return true;
+    }
+  }
+
+  // Check first and last columns
+  for (let i = 0; i < world_matrix.length; i++) {
+    if (world_matrix[i][0] || world_matrix[i][world_matrix[0].length - 1]) {
+      return true;
+    }
+  }
+
+  return false;
 };

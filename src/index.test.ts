@@ -7,6 +7,7 @@ test("try", () => {
 import { willBeAlive } from "./index";
 import { numberAliveNeighbours } from "./index";
 import { getMatrix } from "./index";
+import { analyzeBorders } from "./index";
 
 test("willBeAlive_1", () => {
   expect(willBeAlive(true, 4)).toBe(false);
@@ -80,7 +81,7 @@ test("getMatrix_1", () => {
       1,
       2
     )
-  ).toBe([[false, true, false], [false, false, true], [true, true, true]]);
+  ).toEqual([[false, true, false], [false, false, true], [true, true, true]]);
 });
 
 test("getMatrix_2", () => {
@@ -96,5 +97,58 @@ test("getMatrix_2", () => {
       2,
       2
     )
-  ).toBe([[false, false, true], [true, true, true], [true, false, false]]);
+  ).toEqual([[false, false, true], [true, true, true], [true, false, false]]);
+});
+
+test("analyzeBorders_1", () => {
+  expect(
+    analyzeBorders([
+      [true, true, false],
+      [false, false, false],
+      [false, false, false]
+    ])
+  ).toBe(true);
+});
+
+test("analyzeBorders_2", () => {
+  expect(
+    analyzeBorders([
+      [true, true, false, false],
+      [true, false, false, false],
+      [false, false, false, false],
+      [false, false, false, false]
+    ])
+  ).toBe(true);
+});
+
+test("analyzeBorders_3", () => {
+  expect(
+    analyzeBorders([
+      [false, false, false],
+      [true, false, false],
+      [false, false, false]
+    ])
+  ).toBe(true);
+});
+
+test("analyze_borders_4", () => {
+  expect(
+    analyzeBorders([
+      [false, false, false, false, false],
+      [false, true, true, true, false],
+      [false, true, true, true, false],
+      [false, true, true, true, false],
+      [false, false, false, false, false]
+    ])
+  ).toBe(false);
+});
+
+test("analyze_borders_5", () => {
+  expect(analyzeBorders([[]])).toBe(undefined);
+});
+
+test("analyze_borders_6", () => {
+  expect(
+    analyzeBorders([[true, false, true], [false, false], [true, true, false]])
+  ).toBe(undefined);
 });
