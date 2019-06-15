@@ -1,17 +1,19 @@
 import * as React from "react";
 import { IterCounter } from "./IterCounter";
+import { NumberForm } from "./NumberForm";
 
-export class Main extends React.Component<
-  {},
-  {
-    iter: number;
-  }
-> {
+interface IState {
+  iter: number;
+  dimension: number;
+}
+
+export class Main extends React.Component<{}, IState> {
   increase_iteration: any;
   constructor(props: any) {
     super(props);
     this.state = {
-      iter: 1
+      iter: 0,
+      dimension: 0
     };
   }
 
@@ -20,7 +22,13 @@ export class Main extends React.Component<
       this.setState({ iter: this.state.iter + 1 });
     }, 1000);
   }
+
   render() {
-    return <IterCounter iter={this.state.iter} />;
+    return (
+      <div className="main-div">
+        <NumberForm />
+        <IterCounter iter={this.state.iter} />
+      </div>
+    );
   }
 }
